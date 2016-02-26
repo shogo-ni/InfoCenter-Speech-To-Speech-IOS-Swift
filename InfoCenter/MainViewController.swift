@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import Starscream
 import AVFoundation
+import Starscream
 
-
-class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
+class MainViewController: UIViewController {
 
     //recording vars
     var audioPlayer : AVAudioPlayer?
@@ -27,6 +26,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     let grant_type = "client_credentials"
     let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D"
     var socket: WebSocket!
+    
+    
     //var tokenNS: NSString! //don't need this I believe *****
     var token = String() //token that comes back from ADM
     var finalToken = String() //token that include bearer information
@@ -50,7 +51,8 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape 2048x2048 v1.jpg")!)
+        
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape1024x768 v1.jpg")!)
     }
     
     
@@ -81,11 +83,19 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
     }
     
+    @IBAction func TranslateConnect(sender: AnyObject) {
+        
+        getToken()
+        
+        
+        
+    }
     
     @IBAction func ChineseSimplified(sender: AnyObject) {
         
         self.fromCustomer = "zh-CN"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
     @IBAction func English(sender: AnyObject) {
@@ -160,7 +170,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
             print("Error")
         }
         
-        self.audioRecorder!.delegate = self
+        //self.audioRecorder!.delegate = self
         self.audioRecorder!.meteringEnabled = true
         self.audioRecorder!.prepareToRecord()
         self.audioRecorder!.record()
@@ -291,9 +301,10 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
                 
                 defer {
                     self.token = result!["access_token"] as! String
-                    print("This is the new token \(self.token)")
                     self.finalToken = "Bearer " + self.token //configure token
-                }
+                    print("****>>>>", self.finalToken)
+                    self.connectWebsocket()
+                    }
                 
             } catch {
                 
@@ -303,60 +314,13 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         task.resume()
         
+        
+        
         return self.finalToken
     
     }
     
-    //*****BEGIN WS CONNECTION
     
-    func connectWs(sender: UIButton) {
-        
-        self.finalToken = getToken()
-        print("this is the final token", finalToken)
-        
-        /*
-        let documentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)[0]
-        let urls = try! NSFileManager.defaultManager().contentsOfDirectoryAtURL(documentsDirectory, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles)
-        if (urls.isEmpty) {
-            let alert = UIAlertView()
-            alert.message = "record message"
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            return
-        }
-        */
-        
-        
-        connectWebsocket()
-    }
-
-    
-    func connectWebsocket () {
-        
-        //self.translationDisplay.text = "CONNECTING"
-        
-        
-        // WS to v4
-        
-        self.toInfo = "en-US"
-        //var voice:String = ""
-        //let features = "Partial,texttospeech"   - with text turned on
-        let features = "Partial"
-        
-        
-        //socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + self.fromCustomer + "&to=" + self.toInfo + "&voice=" + voice + "&features=" + features)!, protocols: [])
-        
-        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + self.fromCustomer + "&to=" + self.toInfo + "&features=" + features)!, protocols: [])
-        
-        
-        socket.headers["Authorization"] = "Bearer " + (token as String)
-        socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
-        socket.headers["X-CorrelationId"] = "213091F1CF4aaD"
-        //socket.delegate = self
-        socket.disconnect() //In case the socket is already connected?
-        socket.connect() //make the socket connection
-    }
-
     
     //*****CREATE WAV FILE HEADER
     func getFileHeader(leng: Int, samlpleRate: Int, byteRate: Int) -> [UInt8]{
@@ -445,6 +409,36 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         return header
     }
 
+}
+
+//*****BEGIN WS CONNECTION
+extension MainViewController : WebSocketDelegate {
+
+    
+    func connectWebsocket() {
+        
+        //self.toInfo = "en-US"
+        let voice = "de-DE-Katja"
+        let to = "de-DE"
+        let from = "en-US"
+        let features = "Partial,texttospeech"
+        
+        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + from + "&to=" + to + "&voice=" + voice + "&features=" + features)!, protocols: [])
+        
+        
+        //socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + self.fromCustomer + "&to=" + self.toInfo + "&voice=" + voice + "&features=" + features)!, protocols: [])
+        
+        //socket = WebSocket(url: NSURL(string: "ws://dev.microsofttranslator.com/api/speech/translate?from=" + self.fromCustomer + "&to=" + self.toInfo + "&features=" + features)!, protocols: [])
+        
+        //socket.headers["Authorization"] = self.finalToken
+        socket.headers["Authorization"] = "Bearer " + (token as String)
+        socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
+        socket.headers["X-CorrelationId"] = "213091F1CF4aaD"
+        socket.delegate = self
+        socket.disconnect() //In case the socket is already connected?
+        socket.connect() //make the socket connection
+    }
+
     
     func websocketDidConnect(ws: WebSocket) {
         
@@ -471,7 +465,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         do {
             self.audioFile = try AVAudioFile.init(forReading: self.filePath!, commonFormat: .PCMFormatInt16, interleaved: false) //open the audio file for reading
+            
             print(audioFile!.processingFormat)
+            
         }catch{
             print("error reading file")
         }
@@ -528,8 +524,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     }
     
     //****
-    
-    
     func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
         
         self.chunckCount = 0 //reset the count on disonncet, used in websocketDidReceiveData
@@ -545,7 +539,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     }
     
     //*****
-    
     func websocketDidReceiveMessage(ws: WebSocket, text: String) {
         
         var messageType = String()
@@ -601,7 +594,75 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
     }
 
-    
+    //This is for playing the voice data
+    func websocketDidReceiveData(ws: WebSocket, data: NSData) {
+        
+        print("Received audio data: \(data.length)")
+        
+        let length = data.length //length of chunk
+        //var audioData = data
+        //var sizeRemaining = Int() //NEED TO MAKE THIS GLOBAL FOR THE VC
+        var audioArrayHeader = [UInt32](count: length, repeatedValue: 0) //create arrayfor header
+        var audioArrayChunk = [UInt32](count: length, repeatedValue: 0) //create array
+        
+        if self.chunckCount == 0 {
+            
+            //*****Read size of the overall wave from data in the header
+            let offset = 4
+            let range = NSRange(location: offset, length: 4) //offset = how far to read into the data, length = how many bytes to get when the offset is reached
+            var i = [UInt32](count: 1, repeatedValue:0)
+            
+            data.getBytes(&i, range: range)
+            self.audioFileSize = Int(i[0].littleEndian)// return Int(i[0]) for littleEndian
+            print("header info \(self.audioFileSize)")
+            
+            self.chunckCount = 1 //DOES NOT WORK BECAUSE THERE AUDIO SENT ON FINALThis makes it happen once. Reset in websocketdisconnect
+            
+            //*****Convert NSdata to byte array*****
+            
+            data.getBytes(&audioArrayHeader, length:length * sizeof(UInt32))
+            
+            //audioArray = audioArray + audioArrayHeader
+            
+            //*****End if*****
+            
+        }
+        //if it is the first chunk then do nothing
+        if self.chunckCount != 0 { //append to byte array
+            
+            data.getBytes(&audioArrayChunk, length:length * sizeof(UInt32))
+            //audioArray = audioArray + audioArrayChunk
+        }
+        
+        
+        //if audioArray.count > 150000 {   // keep adding chunks until it is about 150000 bytes
+            
+            //*****Convert Byte array to NSData*****
+            //let newLength = audioArray.count
+            //let newAudioBytes = NSData(bytes: audioArray as [UInt32], length:newLength)
+            
+         //   sizeRemaining = audioFileSize - length
+            //print("\n" + "Number of bytes in array before conversion \(audioArray.count)")
+            //print("\n" + "Number of bytes in NSData NewAudioBytes \(newAudioBytes.length)")
+         //   print("size remaining \(sizeRemaining)")
+            //print(newAudioBytes)
+            
+        //    do {
+                //self.player = try AVPlayer(playerItem:audioData)
+                //self.player = try AVAudioPlayer(data:newAudioBytes)
+                //self.player.delegate = self
+                //self.player.prepareToPlay()
+                //self.player.volume = 5.0
+                //self.player.play()
+                //audioArray.removeAll()
+         //   } catch let e as NSError {
+         //       print(e)
+         //   }
+            
+        //} //end if
+        
+    }
+
     
     
     
