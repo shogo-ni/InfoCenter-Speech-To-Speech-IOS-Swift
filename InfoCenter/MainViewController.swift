@@ -102,23 +102,28 @@ class MainViewController: UIViewController {
         
         self.fromCustomer = "en-US"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
     @IBAction func French(sender: AnyObject) {
         
         self.fromCustomer = "fr-FR"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
     @IBAction func German(sender: AnyObject) {
         
         self.fromCustomer = "de-DE"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
     @IBAction func Italian(sender: AnyObject) {
         
         self.fromCustomer = "it-IT"
+        
+        performSegueWithIdentifier("toTranslation", sender: sender)
         
     }
     
@@ -126,20 +131,31 @@ class MainViewController: UIViewController {
         
         self.fromCustomer = "zh-TW"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
+        
     }
     
     @IBAction func Arabic(sender: AnyObject) {
         
         self.fromCustomer = "ar-SA"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
     @IBAction func Spanish(sender: AnyObject) {
         
         self.fromCustomer = "es-ES"
         
+        performSegueWithIdentifier("toTranslation", sender: sender)
+        
     }
     
+    @IBAction func Portugues(sender: AnyObject) {
+        
+        self.fromCustomer = "pt-PT"
+        
+        performSegueWithIdentifier("toTranslation", sender: sender)
+    }
     
     //*****END IBACTION
     
@@ -154,8 +170,8 @@ class MainViewController: UIViewController {
         
         let recordSettings = [AVEncoderAudioQualityKey: AVAudioQuality.Min.rawValue,
             AVEncoderBitRateKey: 16,
-            AVNumberOfChannelsKey: 2,
-            AVSampleRateKey: 44100.0]
+            AVNumberOfChannelsKey: 1,
+            AVSampleRateKey: 16000.0]
         
         print(filePath)
         
@@ -225,7 +241,7 @@ class MainViewController: UIViewController {
     }
     
        
-    
+    //*****Play
     func play() {
         
         if (!self.audioRecorder!.recording){
@@ -240,6 +256,7 @@ class MainViewController: UIViewController {
         }
     }
     
+    //*****Stop
     func stop() {
         
         self.audioRecorder?.stop()
@@ -421,7 +438,8 @@ extension MainViewController : WebSocketDelegate {
         let voice = "de-DE-Katja"
         let to = "de-DE"
         let from = "en-US"
-        let features = "Partial,texttospeech"
+        //let features = "Partial,texttospeech"
+        let features = "Partial"
         
         socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + from + "&to=" + to + "&voice=" + voice + "&features=" + features)!, protocols: [])
         
@@ -466,6 +484,7 @@ extension MainViewController : WebSocketDelegate {
         do {
             self.audioFile = try AVAudioFile.init(forReading: self.filePath!, commonFormat: .PCMFormatInt16, interleaved: false) //open the audio file for reading
             
+            print("this is the file that is sent", self.filePath)
             print(audioFile!.processingFormat)
             
         }catch{

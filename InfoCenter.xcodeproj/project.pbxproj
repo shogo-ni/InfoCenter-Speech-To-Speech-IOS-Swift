@@ -137,8 +137,8 @@
 			children = (
 				DEB740821C2095F5004A9C00 /* AppDelegate.swift */,
 				DEB740841C2095F5004A9C00 /* MainViewController.swift */,
-				DEB740861C2095F5004A9C00 /* Main.storyboard */,
 				DE97A4FC1C7E156800E46226 /* TranslationVC.swift */,
+				DEB740861C2095F5004A9C00 /* Main.storyboard */,
 				DEB740891C2095F5004A9C00 /* Assets.xcassets */,
 				DEB7408B1C2095F5004A9C00 /* LaunchScreen.storyboard */,
 				DEB7408E1C2095F5004A9C00 /* Info.plist */,

@@ -19,6 +19,19 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         performSegueWithIdentifier("home", sender: sender)
     }
     
+    @IBAction func talkOne(sender: AnyObject) {
+        
+        
+    }
+    @IBAction func talkTwo(sender: AnyObject) {
+        
+        
+    }
+    
+    
+    @IBOutlet weak var translatedText: UITextView!
+    @IBOutlet weak var recognizedText: UITextView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
