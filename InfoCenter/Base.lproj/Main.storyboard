@@ -92,27 +92,6 @@
                                     <action selector="Arabic:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8Gs-W0-lFf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NTZ-i7-SNH">
-                                <rect key="frame" x="53" y="20" width="49" height="30"/>
-                                <state key="normal" title="Record"/>
-                                <connections>
-                                    <action selector="Record:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bac-Nw-90m"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhE-zr-rEm">
-                                <rect key="frame" x="180" y="20" width="30" height="30"/>
-                                <state key="normal" title="Play"/>
-                                <connections>
-                                    <action selector="Play:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JMS-8z-CgY"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wYJ-wi-8bx">
-                                <rect key="frame" x="125" y="20" width="32" height="30"/>
-                                <state key="normal" title="Stop"/>
-                                <connections>
-                                    <action selector="Stop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2lV-ZA-hja"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GzW-kO-oO3">
                                 <rect key="frame" x="634" y="531" width="359" height="91"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
@@ -121,13 +100,6 @@
                                 </state>
                                 <connections>
                                     <action selector="Portugues:" destination="BYZ-38-t0r" eventType="touchUpInside" id="At4-Cj-0El"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cA1-5s-OSA">
-                                <rect key="frame" x="235" y="20" width="64" height="30"/>
-                                <state key="normal" title="Translate"/>
-                                <connections>
-                                    <action selector="TranslateConnect:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ren-FE-J56"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWY-pZ-cVB">
@@ -139,6 +111,13 @@
                                 <connections>
                                     <action selector="German:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8pG-cg-PqD"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6Y-MD-nsB">
+                                <rect key="frame" x="856" y="708" width="137" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -165,9 +144,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="R88-KQ-xjt">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="My Question" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="R88-KQ-xjt">
                                 <rect key="frame" x="20" y="116" width="475" height="567"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -204,7 +182,7 @@
                             </button>
                             <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6ci-hy-Aw4">
                                 <rect key="frame" x="529" y="116" width="475" height="567"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -212,6 +190,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="recognizedText" destination="R88-KQ-xjt" id="7fB-jP-V1w"/>
+                        <outlet property="translatedWebView" destination="6ci-hy-Aw4" id="6Cd-5k-rBL"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="home" id="XCk-j9-VWN"/>
                     </connections>
                 </viewController>

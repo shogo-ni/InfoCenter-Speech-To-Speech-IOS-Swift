@@ -83,9 +83,9 @@ class MainViewController: UIViewController {
         
     }
     
-    @IBAction func TranslateConnect(sender: AnyObject) {
+    @IBAction func TranslateConnect(sender: AnyObject) { //
         
-        getToken()
+        getToken() //this also starts the WS connection and the translations
         
         
         

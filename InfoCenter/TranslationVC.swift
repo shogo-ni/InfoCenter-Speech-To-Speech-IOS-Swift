@@ -61,10 +61,14 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     @IBAction func talkOne(sender: AnyObject) {
         
+        recordSound()
         
     }
-    @IBAction func talkTwo(sender: AnyObject) {
+    @IBAction func talkTwo(sender: AnyObject) {  //*****this is the STOP Button
         
+        
+        stop()
+        getToken()  //this also starts the WS connection and the translations
         
     }
     //*****END IBACTION
@@ -74,6 +78,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var recognizedText: UITextView!
     
+    @IBOutlet weak var translatedWebView: UIWebView!
     //*****END IBOUTLET
     
     override func viewDidLoad() {
@@ -485,8 +490,9 @@ extension TranslationVC : WebSocketDelegate {
     func websocketDidReceiveMessage(ws: WebSocket, text: String) {
         
         var messageType = String()
+        var recognition = String()
         var translation = String()
-        
+        var htmlString : String!
         
         print("Received text: \(text)")
         
@@ -498,14 +504,25 @@ extension TranslationVC : WebSocketDelegate {
             let jsonString = try NSJSONSerialization.JSONObjectWithData(finalText!, options: .AllowFragments)
             
             print("this is the type \(jsonString["type"])")
+            print("this is the full string", jsonString)
             
             messageType = (jsonString["type"] as? String)!
             translation = (jsonString["translation"] as? String)!
+            recognition = (jsonString["recognition"] as? String)!
+            
+            recognizedText.text = recognizedText.text.stringByAppendingString("\n" + recognition)
+            
+            //recognizedText.text = (jsonString["recognition"] as? String)!  //put the recognized text on the screen
+            
+            htmlString = "<br /><h2> \(translation) </h2>"
+            translatedWebView.loadHTMLString(htmlString, baseURL: nil) //put the translation in the webview
+            
             
             print("this is the message type --> \(messageType)")
             
             if messageType == "final" {
                 print("This is the translation \(jsonString["translation"])")
+                
                 self.finalString.append(translation)
                 
             }
