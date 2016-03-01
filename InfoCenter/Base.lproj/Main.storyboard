@@ -18,17 +18,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-ZF-aeU">
-                                <rect key="frame" x="372" y="131" width="196" height="71"/>
+                                <rect key="frame" x="392" y="505" width="196" height="71"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="日本語">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="ChineseTraditional:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u40-FO-xKr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vpk-5j-pdY">
-                                <rect key="frame" x="344" y="309" width="293" height="85"/>
+                                <rect key="frame" x="42" y="306" width="293" height="85"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="Français">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -38,27 +38,17 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bKA-o2-S0r">
-                                <rect key="frame" x="32" y="529" width="277" height="95"/>
+                                <rect key="frame" x="352" y="301" width="277" height="95"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="Italiano">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="Italian:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IAV-cW-qoB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gNS-3V-Pmm">
-                                <rect key="frame" x="336" y="537" width="278" height="79"/>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
-                                <state key="normal" title="Español">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="Spanish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pKE-7u-ooj"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94o-r3-cxG">
-                                <rect key="frame" x="96" y="131" width="133" height="70"/>
+                                <rect key="frame" x="747" y="505" width="133" height="70"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="中文">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -73,7 +63,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AuR-yz-A7X">
-                                <rect key="frame" x="42" y="313" width="255" height="77"/>
+                                <rect key="frame" x="363" y="135" width="255" height="77"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="English">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -83,7 +73,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hTv-b1-Z1h">
-                                <rect key="frame" x="737" y="122" width="173" height="90"/>
+                                <rect key="frame" x="102" y="495" width="173" height="90"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="العربية">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -93,7 +83,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GzW-kO-oO3">
-                                <rect key="frame" x="634" y="531" width="359" height="91"/>
+                                <rect key="frame" x="634" y="303" width="359" height="91"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="Português">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -103,10 +93,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWY-pZ-cVB">
-                                <rect key="frame" x="686" y="313" width="280" height="77"/>
+                                <rect key="frame" x="42" y="135" width="280" height="77"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
                                 <state key="normal" title="Deutsch">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="German:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8pG-cg-PqD"/>
@@ -118,6 +108,16 @@
                                 <state key="normal" title="Settings">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gNS-3V-Pmm">
+                                <rect key="frame" x="675" y="133" width="278" height="79"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
+                                <state key="normal" title="Español">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="Spanish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pKE-7u-ooj"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -144,22 +144,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="My Question" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="R88-KQ-xjt">
-                                <rect key="frame" x="20" y="116" width="475" height="567"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fCB-UW-oyb">
-                                <rect key="frame" x="248" y="700" width="73" height="54"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                                <state key="normal" title="Stop">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="talkTwo:" destination="Aiq-ct-Mj2" eventType="touchUpInside" id="kTS-MB-bB8"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ekn-AH-kGb">
                                 <rect key="frame" x="65" y="712" width="80" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="35"/>
@@ -180,16 +164,30 @@
                                     <action selector="home:" destination="Aiq-ct-Mj2" eventType="touchUpInside" id="qCS-Yd-tmW"/>
                                 </connections>
                             </button>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6ci-hy-Aw4">
+                            <webView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6ci-hy-Aw4">
                                 <rect key="frame" x="529" y="116" width="475" height="567"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </webView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="27" translatesAutoresizingMaskIntoConstraints="NO" id="UtM-Ra-0DF">
+                                <rect key="frame" x="140" y="73" width="235" height="30"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="27"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="R88-KQ-xjt">
+                                <rect key="frame" x="20" y="116" width="475" height="567"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="25"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
                     <connections>
                         <outlet property="recognizedText" destination="R88-KQ-xjt" id="7fB-jP-V1w"/>
+                        <outlet property="statusField" destination="UtM-Ra-0DF" id="kcm-BV-xpI"/>
                         <outlet property="translatedWebView" destination="6ci-hy-Aw4" id="6Cd-5k-rBL"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="home" id="XCk-j9-VWN"/>
                     </connections>
