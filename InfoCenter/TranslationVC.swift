@@ -461,7 +461,7 @@ extension TranslationVC : WebSocketDelegate {
             print("send blank", data_b.length)
             socket.writeData(data_b)
         
-            sleep(5)
+            sleep(8)
             socket.disconnect()
         } else {
             self.statusField.text = "Waiting" //change status
@@ -514,6 +514,7 @@ extension TranslationVC : WebSocketDelegate {
                 recognizedText.text = recognizedText.text.stringByAppendingString(recognition + "\n" + "\n")
                 htmlString = "<h2 style=\"color:white;font-family:verdana;\">\(translation)</h2>"
                 translatedWebView.loadHTMLString(htmlString, baseURL: nil) //put the translation in the webview
+                
 
             }
                         
@@ -535,22 +536,16 @@ extension TranslationVC : WebSocketDelegate {
         print("the final string follows *****")
         print(self.finalString)
         
-        let stringToDisplay = self.finalString.joinWithSeparator(" ")
+        //let stringToDisplay = self.finalString.joinWithSeparator(" ")
         
         
         
         defer {
             
-            //self.translationDisplay.text = stringToDisplay
-            //self.translationDisplay.text = self.finalString.joinWithSeparator(" ")
-            
-            if messageType == "final" {
-                
-                //Translatorv3(self.translationDisplay.text)
-                //Translatorv3(stringToDisplay)
-            }
-            
+            postWebserver(translation)
         }
+            
+        
         
     }
     
@@ -593,6 +588,41 @@ extension TranslationVC : WebSocketDelegate {
             
         }
         
+    }
+    
+    func postWebserver( translationString : String) {
+        
+        
+        
+        //translationString = translationString.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())!
+
+        
+        var translationUrl: String = "https://infocenterserver.azurewebsites.net/api/products" + "?id=" + translationString
+        
+        translationUrl = translationUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        
+        
+        
+        let myUrl: NSURL = NSURL(string: translationUrl)!
+        
+        let request = NSMutableURLRequest(URL: myUrl)
+        
+        request.HTTPMethod = "GET"
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil
+            {
+                print("error= \(error)")
+                
+            }
+            
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("responseString = \(responseString)")
+        }
+        
+        task.resume()
     }
 
 }
