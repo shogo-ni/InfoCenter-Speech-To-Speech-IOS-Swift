@@ -10,6 +10,10 @@ import UIKit
 import AVFoundation
 import Starscream
 
+var toLanguage = "de-DE"
+var fromLanguage = "en-US"
+
+
 class MainViewController: UIViewController {
 
     var audioFile : AVAudioFile?
@@ -115,13 +119,23 @@ class MainViewController: UIViewController {
         performSegueWithIdentifier("toTranslation", sender: sender)
     }
     
+    @IBAction func settings(sender: AnyObject) {
+        
+        performSegueWithIdentifier("toSettings", sender: sender)
+    }
     //*****END IBACTION
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        let segueToTranslation : TranslationVC = segue.destinationViewController as! TranslationVC
+        if segue.identifier == "toTranslation" {
+            let segueToTranslation : TranslationVC = segue.destinationViewController as! TranslationVC
+            segueToTranslation.customerLanguage = customerLanguage
+        }
         
-        segueToTranslation.customerLanguage = customerLanguage
+        if segue.identifier == "toSettings" {
+            print("segue")
+        }
+                
     }
    
     

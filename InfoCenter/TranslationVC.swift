@@ -67,6 +67,15 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         recordSound()
         
     }
+    
+    
+    @IBAction func refreshWeb(sender: AnyObject) {
+        
+        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        
+    }
+    
+    
     //*****END IBACTION
     
     
@@ -82,6 +91,8 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape1024x768 v1.jpg")!)
+        
+        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("refreshWebView"), userInfo: nil, repeats: true)
         
         statusField.text = "Waiting"
         
@@ -367,7 +378,7 @@ extension TranslationVC : WebSocketDelegate {
         
         //self.toInfo = "en-US"
         let voice = "de-DE-Katja"
-        let to = "de-DE"
+        let to = toLanguage
         let from = self.customerLanguage
         //let features = "Partial,texttospeech"
         let features = "Partial"
@@ -512,10 +523,10 @@ extension TranslationVC : WebSocketDelegate {
                 translation = (jsonString["translation"] as? String)!
                 recognition = (jsonString["recognition"] as? String)!
                 recognizedText.text = recognizedText.text.stringByAppendingString(recognition + "\n" + "\n")
-                htmlString = "<h2 style=\"color:white;font-family:verdana;\">\(translation)</h2>"
-                translatedWebView.loadHTMLString(htmlString, baseURL: nil) //put the translation in the webview
+                //htmlString = "<h2 style=\"color:white;font-family:verdana;\">\(translation)</h2>"
+                //translatedWebView.loadHTMLString(htmlString, baseURL: nil) //put the translation in the webview
                 
-
+                
             }
                         
             
@@ -543,8 +554,8 @@ extension TranslationVC : WebSocketDelegate {
         defer {
             
             postWebserver(translation)
-        }
             
+        }
         
         
     }
@@ -620,9 +631,21 @@ extension TranslationVC : WebSocketDelegate {
             
             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
             print("responseString = \(responseString)")
+            self.translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
         }
         
         task.resume()
+        
+        defer
+        {
+            translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        }
+    }
+    
+    func refreshWebView() {
+        
+        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        
     }
 
 }

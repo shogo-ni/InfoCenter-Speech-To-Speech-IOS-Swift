@@ -22,6 +22,7 @@
 		DEB740B91C20DF6C004A9C00 /* blue finger pointing.png in Resources */ = {isa = PBXBuildFile; fileRef = DEB740B81C20DF6C004A9C00 /* blue finger pointing.png */; };
 		DEB740BB1C20ED43004A9C00 /* cityscape 2048x2048 v1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DEB740BA1C20ED43004A9C00 /* cityscape 2048x2048 v1.jpg */; };
 		DEB740BD1C21DFF5004A9C00 /* Mic-Green.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = DEB740BC1C21DFF5004A9C00 /* Mic-Green.jpeg */; };
+		DEDC2FF51C8A4E7B003CF27D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDC2FF41C8A4E7B003CF27D /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		DEB740B81C20DF6C004A9C00 /* blue finger pointing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blue finger pointing.png"; sourceTree = "<group>"; };
 		DEB740BA1C20ED43004A9C00 /* cityscape 2048x2048 v1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "cityscape 2048x2048 v1.jpg"; sourceTree = "<group>"; };
 		DEB740BC1C21DFF5004A9C00 /* Mic-Green.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Mic-Green.jpeg"; sourceTree = "<group>"; };
+		DEDC2FF41C8A4E7B003CF27D /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				DEB740821C2095F5004A9C00 /* AppDelegate.swift */,
 				DEB740841C2095F5004A9C00 /* MainViewController.swift */,
 				DE97A4FC1C7E156800E46226 /* TranslationVC.swift */,
+				DEDC2FF41C8A4E7B003CF27D /* SettingsViewController.swift */,
 				DEB740861C2095F5004A9C00 /* Main.storyboard */,
 				DEB740891C2095F5004A9C00 /* Assets.xcassets */,
 				DEB7408B1C2095F5004A9C00 /* LaunchScreen.storyboard */,
@@ -361,6 +364,7 @@
 			files = (
 				DE97A4FD1C7E156800E46226 /* TranslationVC.swift in Sources */,
 				DEB740851C2095F5004A9C00 /* MainViewController.swift in Sources */,
+				DEDC2FF51C8A4E7B003CF27D /* SettingsViewController.swift in Sources */,
 				DEB740831C2095F5004A9C00 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
