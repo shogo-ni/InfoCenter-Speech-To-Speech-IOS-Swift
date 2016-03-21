@@ -13,8 +13,6 @@ import AVFoundation
 
 class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
 
-    
-    
     //recording vars
     var audioPlayer : AVAudioPlayer?
     var audioRecorder : AVAudioRecorder?
@@ -30,23 +28,26 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     let client_id = "softbank_MSTS2S_App"
     let grant_type = "client_credentials"
     let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D"
+    
     var socket: WebSocket!
     
     var token = String() //token that comes back from ADM
     var finalToken = String() //token that include bearer information
     
-    //var finalString = [String]() //for printing out the final translation
-    
     var customerLanguage = String() //set by button
     var toCustomer = String()   //set by Settings option
     var voiceCustomer = String() // set by Settings option
     
-    //var infoLanguage = String()  //set by Settings Option
     var toInfo = String()   //set by button
     var voiceInfo = String() //set by button
     var features = String() //set by Setting option
     var chunckCount = 0
     var audioFileSize = 0
+    
+    var oldStringFromWebView = ""
+    var newStringFromWebView = ""
+    
+    var lastSpeaker = "no"
 
     
     //*****IBACTION
@@ -61,6 +62,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
         statusField.text = "Listening"
         recordSound()
+        lastSpeaker = "yes"
         
         
     }
@@ -599,19 +601,71 @@ extension TranslationVC : WebSocketDelegate {
         
         task.resume()
         
-        defer
-        {
-            let result = translatedWebView.stringByEvaluatingJavaScriptFromString("document.body.innerText")
-            print("This is the text from the webview", result)
-        }
     }
     
     func refreshWebView() {
         
         translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
         
+        newStringFromWebView = translatedWebView.stringByEvaluatingJavaScriptFromString("document.body.innerText") as String!
+        
+        if newStringFromWebView != oldStringFromWebView {
+            
+            if lastSpeaker == "no" {
+                
+            getVoice(newStringFromWebView)
+            
+            } else {
+                lastSpeaker = "no"
+            }
+        }
+            
+        oldStringFromWebView = newStringFromWebView
     }
-
+    
+    
+    func getVoice(translationToVoice : String) {
+        
+        var translatedString = translationToVoice //passed in string
+        let quality = "MinSize"
+        let to = fromLanguage
+        let customAllowedSet = NSCharacterSet(charactersInString:" _!*'();:@$,#[]+=/").invertedSet
+        
+        translatedString = translatedString.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+        
+        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.microsofttranslator.com/V2/Http.svc/Speak?text=\(translatedString)&language=\(to)&options=\(quality)" )!)
+        request.HTTPMethod = "GET"
+        
+        request.addValue(self.finalToken, forHTTPHeaderField:"Authorization")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+            data, response, error in
+            
+            if error != nil {
+                print("error=\(error)")
+                return
+            }
+            
+            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print("this is the reponse from the speakmethod", responseString)
+            print("this is the data from the speakmethod", data)
+            
+            //PLAY AUDIO
+            do {
+                self.audioPlayer = try AVAudioPlayer(data:data!)
+                self.audioPlayer!.delegate = self
+                self.audioPlayer!.prepareToPlay()
+                self.audioPlayer!.volume = 3.0
+                self.audioPlayer!.play()
+            } catch {
+                print("error Audio Player")
+            }
+        }
+        
+        task.resume()
+        
+        
+    }
 }
 
 
