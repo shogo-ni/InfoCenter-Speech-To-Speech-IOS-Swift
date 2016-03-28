@@ -19,8 +19,6 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     var url : NSURL? //holds the URL to the file that is being sent to V4
     var filePath : NSURL?
     var silenceTimer = NSTimer()
-    var soundLevel : Double = 0.0
-    var averageDecibalCount = 0 //counter
     
     var audioFile : AVAudioFile?
     
@@ -35,14 +33,8 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     var finalToken = String() //token that include bearer information
     
     var customerLanguage = String() //set by button
-    //var toCustomer = String()   //set by Settings option
-    //var voiceCustomer = String() // set by Settings option
-    
-    //var toInfo = String()   //set by button
-    //var voiceInfo = String() //set by button
     var features = String() //set by Setting option
-    var chunckCount = 0
-    var audioFileSize = 0
+    
     
     var oldStringFromWebView = ""
     var newStringFromWebView = ""
@@ -130,15 +122,10 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
             print("Error")
         }
         
-        //self.audioRecorder!.delegate = self
-        self.audioRecorder!.meteringEnabled = true
+                self.audioRecorder!.meteringEnabled = true
         self.audioRecorder!.prepareToRecord()
         self.audioRecorder!.record()
         
-        //timer with callback to check for silence every second
-        
-        //self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: false)
-        //self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: true)
         
         //check to see if file exists
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
@@ -200,20 +187,6 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     }
     
     
-    //*****Play
-    func play() {
-        
-        if (!self.audioRecorder!.recording){
-            do {
-                try audioPlayer = AVAudioPlayer(contentsOfURL: self.url!)
-                audioPlayer!.play()
-            } catch {
-                
-                print("failed to play file")
-                
-            }
-        }
-    }
     
     //*****Stop
     func stop() {
@@ -263,6 +236,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
                 defer {
                     self.token = result!["access_token"] as! String
                     self.finalToken = "Bearer " + self.token //configure token
+                    
                     self.connectWebsocket() //start the connection to the websocket
                 }
                 
@@ -377,16 +351,12 @@ extension TranslationVC : WebSocketDelegate {
     
     func connectWebsocket() {
         
-        //let voice = "de-DE-Katja"
         let to = toLanguage
         let from = self.customerLanguage
-        //let features = "Partial,texttospeech"
+        
         let features = "Partial"
         
-        //socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + from + "&to=" + to + "&voice=" + voice + "&features=" + features)!, protocols: [])
-        
         socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + from + "&to=" + to + "&features=" + features)!, protocols: [])
-
         
         socket.headers["Authorization"] = "Bearer " + (token as String)
         socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
@@ -474,8 +444,6 @@ extension TranslationVC : WebSocketDelegate {
     //****
     func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
         
-        self.chunckCount = 0 //reset the count on disonncet, used in websocketDidReceiveData
-        self.audioFileSize = 0 //reset the count on disonncet, used in websocketDidReceiveData
         
         if let e = error {
             print("websocket is disconnected: \(e.localizedDescription)")
@@ -537,47 +505,13 @@ extension TranslationVC : WebSocketDelegate {
     //This is for playing the voice data
     func websocketDidReceiveData(ws: WebSocket, data: NSData) {
         
-        print("Received audio data: \(data.length)")
-        
         let length = data.length //length of chunk
+        print("Received audio data: \(length)")
         
-        //var audioArrayHeader = [UInt32](count: length, repeatedValue: 0) //create arrayfor header
         var audioArrayChunk = [UInt32](count: length, repeatedValue: 0) //create array
         
-        
-//        if self.chunckCount == 0 {
-//            
-//            //*****Read size of the overall wave from data in the header
-//            let offset = 4
-//            let range = NSRange(location: offset, length: 4) //offset = how far to read into the data, length = how many bytes to get when the offset is reached
-//            var i = [UInt32](count: 1, repeatedValue:0)
-//            
-//            data.getBytes(&i, range: range)
-//            self.audioFileSize = Int(i[0].littleEndian)// return Int(i[0]) for littleEndian
-//            print("header info \(self.audioFileSize)")
-//            
-//            self.chunckCount = 1 //DOES NOT WORK BECAUSE THERE AUDIO SENT ON FINALThis makes it happen once. Reset in websocketdisconnect
-//            
-//            //*****Convert NSdata to byte array*****
-//            
-//            //data.getBytes(&audioArrayHeader, length:length * sizeof(UInt32))
-//
-//            
-//            //*****End if*****
-//
-//            
-//        }
-
-        
-
-        //if it is the first chunk then do nothing
-//        if self.chunckCount != 0 { //append to byte array
-//            
-//            data.getBytes(&audioArrayChunk, length:length * sizeof(UInt32))
-//            
-//        }
-        
     }
+    
     
     func postWebserver( translationString : String) {
 
@@ -627,7 +561,7 @@ extension TranslationVC : WebSocketDelegate {
                 lastSpeaker = "no"
             }
         } else {
-            //print("not new string")
+            print("not new string")
         }
             
         defer {
@@ -661,7 +595,7 @@ extension TranslationVC : WebSocketDelegate {
             
             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
             print("this is the reponse from the speakmethod", responseString)
-            //print("this is the data from the speakmethod", data)
+            
             
             //PLAY AUDIO
             do {
