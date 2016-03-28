@@ -35,11 +35,11 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     var finalToken = String() //token that include bearer information
     
     var customerLanguage = String() //set by button
-    var toCustomer = String()   //set by Settings option
-    var voiceCustomer = String() // set by Settings option
+    //var toCustomer = String()   //set by Settings option
+    //var voiceCustomer = String() // set by Settings option
     
-    var toInfo = String()   //set by button
-    var voiceInfo = String() //set by button
+    //var toInfo = String()   //set by button
+    //var voiceInfo = String() //set by button
     var features = String() //set by Setting option
     var chunckCount = 0
     var audioFileSize = 0
@@ -70,8 +70,8 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     @IBAction func refreshWeb(sender: AnyObject) {
         
-        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
-        
+        //translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        checkForSilence()
     }
     
     //*****END IBACTION
@@ -93,6 +93,8 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("refreshWebView"), userInfo: nil, repeats: true)
         
         statusField.text = "Waiting"
+        
+        postWebserver(" ")
         
     }
 
@@ -135,8 +137,8 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
         //timer with callback to check for silence every second
         
-        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: false)
-        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: true)
+        //self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: false)
+        //self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("checkForSilence"), userInfo: nil, repeats: true)
         
         //check to see if file exists
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
@@ -164,18 +166,19 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
         audioRecorder?.updateMeters()
         print("sound level is ",audioRecorder?.averagePowerForChannel(0) )
-        
-        averageDecibalCount++
+        self.audioRecorder!.stop()
+        getToken()
+        //averageDecibalCount++
         
 
-        if audioRecorder?.averagePowerForChannel(0) < -39 { //if less than -50 then it is silence enough. true silence is -160
+        /*if audioRecorder?.averagePowerForChannel(0) < -39 { //if less than -50 then it is silence enough. true silence is -160
             print("sound level is ",audioRecorder?.averagePowerForChannel(0) )
             self.audioRecorder!.stop()
             self.silenceTimer.invalidate()
             averageDecibalCount = 0
             getToken()
 
-        }
+        }*/
         
     }
     
@@ -437,7 +440,7 @@ extension TranslationVC : WebSocketDelegate {
         usleep(100000)
         
         // send chunk
-        let sep = 32000
+        let sep = 10000
         let num = length/sep
         
         if length != 64632 {
@@ -452,7 +455,7 @@ extension TranslationVC : WebSocketDelegate {
             // send blank
             var raw_b = 0b0
             let data_b = NSMutableData(bytes: &raw_b, length: sizeof(NSInteger))
-            for _ in 0...10000 {
+            for _ in 0...11000 {
                 data_b.appendBytes(&raw_b, length: sizeof(NSInteger))
             }
         
@@ -538,36 +541,41 @@ extension TranslationVC : WebSocketDelegate {
         
         let length = data.length //length of chunk
         
-        var audioArrayHeader = [UInt32](count: length, repeatedValue: 0) //create arrayfor header
+        //var audioArrayHeader = [UInt32](count: length, repeatedValue: 0) //create arrayfor header
         var audioArrayChunk = [UInt32](count: length, repeatedValue: 0) //create array
         
-        if self.chunckCount == 0 {
-            
-            //*****Read size of the overall wave from data in the header
-            let offset = 4
-            let range = NSRange(location: offset, length: 4) //offset = how far to read into the data, length = how many bytes to get when the offset is reached
-            var i = [UInt32](count: 1, repeatedValue:0)
-            
-            data.getBytes(&i, range: range)
-            self.audioFileSize = Int(i[0].littleEndian)// return Int(i[0]) for littleEndian
-            print("header info \(self.audioFileSize)")
-            
-            self.chunckCount = 1 //DOES NOT WORK BECAUSE THERE AUDIO SENT ON FINALThis makes it happen once. Reset in websocketdisconnect
-            
-            //*****Convert NSdata to byte array*****
-            
-            data.getBytes(&audioArrayHeader, length:length * sizeof(UInt32))
-            
-            
-            //*****End if*****
-            
-        }
+        
+//        if self.chunckCount == 0 {
+//            
+//            //*****Read size of the overall wave from data in the header
+//            let offset = 4
+//            let range = NSRange(location: offset, length: 4) //offset = how far to read into the data, length = how many bytes to get when the offset is reached
+//            var i = [UInt32](count: 1, repeatedValue:0)
+//            
+//            data.getBytes(&i, range: range)
+//            self.audioFileSize = Int(i[0].littleEndian)// return Int(i[0]) for littleEndian
+//            print("header info \(self.audioFileSize)")
+//            
+//            self.chunckCount = 1 //DOES NOT WORK BECAUSE THERE AUDIO SENT ON FINALThis makes it happen once. Reset in websocketdisconnect
+//            
+//            //*****Convert NSdata to byte array*****
+//            
+//            //data.getBytes(&audioArrayHeader, length:length * sizeof(UInt32))
+//
+//            
+//            //*****End if*****
+//
+//            
+//        }
+
+        
+
         //if it is the first chunk then do nothing
-        if self.chunckCount != 0 { //append to byte array
-            
-            data.getBytes(&audioArrayChunk, length:length * sizeof(UInt32))
-            
-        }
+//        if self.chunckCount != 0 { //append to byte array
+//            
+//            data.getBytes(&audioArrayChunk, length:length * sizeof(UInt32))
+//            
+//        }
         
     }
     
@@ -618,9 +626,13 @@ extension TranslationVC : WebSocketDelegate {
             } else {
                 lastSpeaker = "no"
             }
+        } else {
+            //print("not new string")
         }
             
+        defer {
         oldStringFromWebView = newStringFromWebView
+        }
     }
     
     
@@ -628,7 +640,8 @@ extension TranslationVC : WebSocketDelegate {
         
         var translatedString = translationToVoice //passed in string
         let quality = "MinSize"
-        let to = fromLanguage
+        let to = self.customerLanguage
+        print(toVoice)
         let customAllowedSet = NSCharacterSet(charactersInString:" _!*'();:@$,#[]+=/").invertedSet
         
         translatedString = translatedString.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
@@ -648,7 +661,7 @@ extension TranslationVC : WebSocketDelegate {
             
             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
             print("this is the reponse from the speakmethod", responseString)
-            print("this is the data from the speakmethod", data)
+            //print("this is the data from the speakmethod", data)
             
             //PLAY AUDIO
             do {

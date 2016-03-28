@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 import Starscream
 
+var toVoice = "fr-FR"
+
 class SettingsViewController: UIViewController {
     
     var customerLanguage = String()
@@ -26,13 +28,14 @@ class SettingsViewController: UIViewController {
         
         toLanguage = "de-DE"
         toLanguageText.text = "German"
-        
+        toVoice = "de-DE"
     }
     
     @IBAction func toEnglish(sender: AnyObject) {
         
         toLanguage = "en-US"
         toLanguageText.text = "English"
+        toVoice = "en-US"
         print(toLanguage)
     }
     
@@ -40,42 +43,50 @@ class SettingsViewController: UIViewController {
         
         toLanguage = "es-ES"
         toLanguageText.text = "Spanish"
+        toVoice = "es-ES"
     }
     
     @IBAction func toFrench(sender: AnyObject) {
         
         toLanguage = "fr-FR"
         toLanguageText.text = "French"
+        toVoice = "fr-FR"
     }
     
     @IBAction func toItalian(sender: AnyObject) {
         
         toLanguage = "it-IT"
-        toLanguageText.text = "Ialian"
+        toLanguageText.text = "Italian"
+        toVoice = "it-IT"
+        print(toVoice)
     }
     
     @IBAction func toPortuguese(sender: AnyObject) {
         
         toLanguage = "pt-PT"
         toLanguageText.text = "Portuguese"
+        toVoice = "pt-PT"
     }
     
     @IBAction func toArabic(sender: AnyObject) {
         
         toLanguage = "ar-SA"
         toLanguageText.text = "Arabic"
+        toVoice = "ar-SA"
     }
     
     @IBAction func toChineseSimplified(sender: AnyObject) {
         
         toLanguage = "zh-CN"
         toLanguageText.text = "Chinese Simplified"
+        toVoice = "zh-CN"
     }
     
     @IBAction func toChineseTraditional(sender: AnyObject) {
         
         toLanguage = "zh-TW"
         toLanguageText.text = "Chinese Traditional"
+        toVoice = "zh-TW"
     }
     
     @IBAction func toMain(sender: AnyObject) {
