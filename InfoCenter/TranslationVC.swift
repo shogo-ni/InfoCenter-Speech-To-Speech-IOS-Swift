@@ -25,7 +25,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     let scope = "http://api.microsofttranslator.com"
     let client_id = "ENTER CLIENT ID"
     let grant_type = "client_credentials"
-    let client_secret = "ENTER CLIENT SECRETXCCCCXXXXXXXXX"
+    let client_secret = "ENTER CLIENT SECRETXCCCC"
     var token = String() //token that comes back from ADM
     var finalToken = String() //token that include bearer information
     
