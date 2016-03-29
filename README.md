@@ -19,9 +19,9 @@ The translated text also is spoken on the iPad using a synthetic voice in the co
 
 
 ####Getting Started
-You will need to setup a subscription with Microsoft Translator. [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) to get started.
+-You will need to setup a subscription with Microsoft Translator. [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) to get started.
 
-Speech API documentation can be [found here.] (https://docs.microsofttranslator.com/)
+-Speech API documentation can be [found here.] (https://docs.microsofttranslator.com/)
 This app posts translations to a webservice. You will need a website to post to, or change the app to post locally to the UIWebView.
 
 
