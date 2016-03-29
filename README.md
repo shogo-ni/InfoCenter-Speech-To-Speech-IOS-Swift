@@ -29,9 +29,9 @@ This app posts translations to a webservice. You will need a website to post to,
 #####Setup
 The app uses a library for connecting over a websocket. The library is on GitHub and it is called [**StarScream**.] (https://github.com/daltoniam/Starscream)
 
-The iPad graphics are setup for the standard iPad, not the ipad pro.
+The iPad graphics are setup for the standard iPad, not the iPad pro.
 
-:+1:
+:+2:
 
 - Start App
 - Speak in your langauge
