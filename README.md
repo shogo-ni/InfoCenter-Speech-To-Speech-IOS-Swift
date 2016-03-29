@@ -15,8 +15,6 @@ The translated text is posted to a web service where both iPads retrieve it and 
 
 The translated text also is spoken on the iPad using a synthetic voice in the correct accent for the selected language.
 
-A simple way to look at the app; it is an iPad walkie talkie that translates.
-
 ####Getting Started
 -You will need to setup a subscription with Microsoft Translator. [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) to get started.
 
