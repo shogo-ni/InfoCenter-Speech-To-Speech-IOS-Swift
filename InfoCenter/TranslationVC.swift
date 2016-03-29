@@ -19,22 +19,20 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     var url : NSURL? //holds the URL to the file that is being sent to V4
     var filePath : NSURL?
     var silenceTimer = NSTimer()
-    
     var audioFile : AVAudioFile?
     
+    //vars for get tokens
     let scope = "http://api.microsofttranslator.com"
-    let client_id = "softbank_MSTS2S_App"
+    let client_id = "ENTER CLIENT ID"
     let grant_type = "client_credentials"
-    let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D"
-    
-    var socket: WebSocket!
-    
+    let client_secret = "ENTER CLIENT SECRETXCCCCXXXXXXXXX"
     var token = String() //token that comes back from ADM
     var finalToken = String() //token that include bearer information
     
+    var socket: WebSocket!
+    
     var customerLanguage = String() //set by button
     var features = String() //set by Setting option
-    
     
     var oldStringFromWebView = ""
     var newStringFromWebView = ""
@@ -51,11 +49,9 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     @IBAction func talkOne(sender: AnyObject) {
         
-        
         statusField.text = "Listening"
         recordSound()
         lastSpeaker = "yes"
-        
         
     }
     
@@ -153,9 +149,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
     }
     
-    
-    
-    
+
     func sizeForLocalFilePath(filePath:String) -> UInt64 {
         
         do {
@@ -171,9 +165,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         return 0
     }
     
-    
-    
-    //*****Stop
+
     func stop() {
         
         self.audioRecorder?.stop()
@@ -182,6 +174,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     }
     
     //*****END RECORDING SECTION
+    
     
     //*****GET TOKEN*****
     func getToken() -> String {
@@ -330,7 +323,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
 }
 
-//*****BEGIN WS CONNECTION
+//*****BEGIN Extension section for Web Socket Methods
 extension TranslationVC : WebSocketDelegate {
     
     
@@ -380,7 +373,6 @@ extension TranslationVC : WebSocketDelegate {
             print("error loading buffer")
         }
         
-        
         let channels = UnsafeBufferPointer(start: audioFileBuffer.int16ChannelData, count: 1)
         let length = Int(audioFileBuffer.frameCapacity * audioFileBuffer.format.streamDescription.memory.mBytesPerFrame)
         let audioData = NSData(bytes: channels[0], length:length)
@@ -394,7 +386,7 @@ extension TranslationVC : WebSocketDelegate {
         socket.writeData(NSData(bytes: &header, length: header.count))
         usleep(100000)
         
-        // send chunk
+        // send chunks
         let sep = 10000
         let num = length/sep
         
@@ -417,16 +409,13 @@ extension TranslationVC : WebSocketDelegate {
             print("send blank", data_b.length)
             socket.writeData(data_b)
             
-        
-            
         } else {
             self.statusField.text = "Waiting" //change status
             socket.disconnect()
         }
-        
     }
     
-    //****
+    
     func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
         
         
@@ -440,7 +429,7 @@ extension TranslationVC : WebSocketDelegate {
         self.statusField.text = "Waiting"
     }
     
-    //*****
+    
     func websocketDidReceiveMessage(ws: WebSocket, text: String) {
         
         var messageType = String()
@@ -460,6 +449,7 @@ extension TranslationVC : WebSocketDelegate {
             
             messageType = (jsonString["type"] as? String)!
             
+            //this section displays partials to the textviw
             if messageType == "partial" {
                 recognition = (jsonString["recognition"] as? String)!
                 recognizedText.text = recognition
@@ -480,8 +470,9 @@ extension TranslationVC : WebSocketDelegate {
             
             if messageType == "final" {
                 
+                //The statement below changes the textview to append data to the view rather than replacing what was there.
                 //recognizedText.text = recognizedText.text.stringByAppendingString(recognition + "\n\n")
-                //sleep(1)
+                
                 recognizedText.text = recognition
                 postWebserver(translation)
                 socket.disconnect()
@@ -493,7 +484,7 @@ extension TranslationVC : WebSocketDelegate {
     }
     
     
-    //This is for playing the voice data
+    //This is for playing the voice data - This functionality is not used in the app.
     func websocketDidReceiveData(ws: WebSocket, data: NSData) {
         
         let length = data.length //length of chunk
@@ -507,7 +498,7 @@ extension TranslationVC : WebSocketDelegate {
     func postWebserver( translationString : String) {
 
         
-        var translationUrl: String = "https://infocenterserver.azurewebsites.net/api/products" + "?id=" + translationString
+        var translationUrl: String = "ENTER URL TO MAKE THE POST" + "?id=" + translationString
         
         translationUrl = translationUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         
@@ -529,7 +520,7 @@ extension TranslationVC : WebSocketDelegate {
             
             let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
             print("responseString = \(responseString)")
-            //self.translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+            
         }
         
         task.resume()
@@ -538,7 +529,7 @@ extension TranslationVC : WebSocketDelegate {
     
     func refreshWebView() {
         
-        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "ENTER URL TO GET WEB CONTENT")!))
         
         newStringFromWebView = translatedWebView.stringByEvaluatingJavaScriptFromString("document.body.innerText") as String!
         
@@ -601,7 +592,6 @@ extension TranslationVC : WebSocketDelegate {
         }
         
         task.resume()
-        
         
     }
 }
