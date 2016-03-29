@@ -13,10 +13,9 @@ The recognized text, and the translation is returned to the app over the websock
 
 The translated text is posted to a web service where both iPads retrieve it and display it. The second user then answers the question sent using the same process that the first user used, and the translated text from the second iPad is picked up by the first iPad from the web service.
 
-A simple way to look at the app; it is an iPad walkie talkie that translates text.
-
 The translated text also is spoken on the iPad using a synthetic voice in the correct accent for the selected language.
 
+A simple way to look at the app; it is an iPad walkie talkie that translates.
 
 ####Getting Started
 -You will need to setup a subscription with Microsoft Translator. [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) to get started.
