@@ -60,20 +60,24 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     }
     
     
-    @IBAction func refreshWeb(sender: AnyObject) {
+    @IBAction func doneTalking(sender: AnyObject) {
         
-        //translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
-        checkForSilence()
+        self.audioRecorder!.stop()
+        getToken()
+        
     }
+    
     
     //*****END IBACTION
     
     
     //*****IBOUTLET
+    
     @IBOutlet weak var translatedText: UITextView!
     @IBOutlet weak var recognizedText: UITextView!
     @IBOutlet weak var translatedWebView: UIWebView!
     @IBOutlet weak var statusField: UITextField!
+    
     //*****END IBOUTLET
     
     
@@ -82,7 +86,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape1024x768 v1.jpg")!)
         
-        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("refreshWebView"), userInfo: nil, repeats: true)
+        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(TranslationVC.refreshWebView), userInfo: nil, repeats: true)
         
         statusField.text = "Waiting"
         
@@ -149,28 +153,9 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
     }
     
-    func checkForSilence() {
-        
-        audioRecorder?.updateMeters()
-        print("sound level is ",audioRecorder?.averagePowerForChannel(0) )
-        self.audioRecorder!.stop()
-        getToken()
-        //averageDecibalCount++
-        
-
-        /*if audioRecorder?.averagePowerForChannel(0) < -39 { //if less than -50 then it is silence enough. true silence is -160
-            print("sound level is ",audioRecorder?.averagePowerForChannel(0) )
-            self.audioRecorder!.stop()
-            self.silenceTimer.invalidate()
-            averageDecibalCount = 0
-            getToken()
-
-        }*/
-        
-    }
     
     
-    //used to gets the size of the file and returns it
+    
     func sizeForLocalFilePath(filePath:String) -> UInt64 {
         
         do {
@@ -475,6 +460,11 @@ extension TranslationVC : WebSocketDelegate {
             
             messageType = (jsonString["type"] as? String)!
             
+            if messageType == "partial" {
+                recognition = (jsonString["recognition"] as? String)!
+                recognizedText.text = recognition
+            }
+            
             if messageType == "final" {
                 
                 translation = (jsonString["translation"] as? String)!
@@ -490,8 +480,9 @@ extension TranslationVC : WebSocketDelegate {
             
             if messageType == "final" {
                 
-                recognizedText.text = recognizedText.text.stringByAppendingString(recognition + "\n\n")
-                sleep(1)
+                //recognizedText.text = recognizedText.text.stringByAppendingString(recognition + "\n\n")
+                //sleep(1)
+                recognizedText.text = recognition
                 postWebserver(translation)
                 socket.disconnect()
                 
@@ -561,7 +552,7 @@ extension TranslationVC : WebSocketDelegate {
                 lastSpeaker = "no"
             }
         } else {
-            print("not new string")
+            
         }
             
         defer {
