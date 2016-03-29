@@ -24,15 +24,8 @@ The translated text also is spoken on the iPad using a synthetic voice in the co
 -Speech API documentation can be [found here.] (https://docs.microsofttranslator.com/)
 This app posts translations to a webservice. You will need a website to post to, or change the app to post locally to the UIWebView.
 
-
-
-#####Setup
+####Setup
 The app uses a library for connecting over a websocket. The library is on GitHub and it is called [**StarScream**.] (https://github.com/daltoniam/Starscream)
 
-The iPad graphics are setup for the standard iPad, not the iPad pro.
+The iPad graphics are setup for the standard iPad, not the iPad Pro.
 
-:+2:
-
-- Start App
-- Speak in your langauge
-- Translation will be displayed
