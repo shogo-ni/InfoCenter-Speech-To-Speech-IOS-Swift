@@ -1,6 +1,6 @@
 # InfoCenter
 ###Microsoft Translator Demonstration App For Tourist Information Centers
-The app demonstrates how to use the Microsoft Translator Speech API. It is an IOS app written in Swift for the iPad. It is designed for information centers who need langauge translation to support tourists. 
+The app demonstrates how to use the Microsoft Translator Speech API. It is an IOS app written in *Swift* for the iPad. It is designed for information centers who need langauge translation to support tourists. 
 
 ####How it works
 The app is designed for use with two iPads. The user selects a 'to' language in 'settings' and then selects the language that they are going to speak from the main screen. The second user does the same.
@@ -21,9 +21,10 @@ The translated text also is spoken on the iPad using a synthetic voice in the co
 ####Getting Started
 You will need to setup a subscription with Microsoft Translator. [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) to get started.
 
+Speech API documentation can be [found here.] (https://docs.microsofttranslator.com/)
 This app posts translations to a webservice. You will need a website to post to, or change the app to post locally to the UIWebView.
 
-####Setup
+
 
 #####Account
 
@@ -34,7 +35,7 @@ This app posts translations to a webservice. You will need a website to post to,
 
 Kelly Said >This is great
 
-For more information [Click Here] (https://www.microsoft.com/en-us/translator/default.aspx) 
+
 
 
 
