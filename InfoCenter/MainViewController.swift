@@ -32,7 +32,7 @@ class MainViewController: UIViewController {
     
     
     
-    //*****IBACTION
+    //*****IBACTION*****
     @IBAction func ChineseSimplified(sender: AnyObject) {
         
         self.customerLanguage = "zh-CN"
@@ -103,6 +103,8 @@ class MainViewController: UIViewController {
         
         performSegueWithIdentifier("toSettings", sender: sender)
     }
+    
+    
     //*****END IBACTION
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
