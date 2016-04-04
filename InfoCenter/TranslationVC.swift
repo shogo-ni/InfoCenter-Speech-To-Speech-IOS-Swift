@@ -23,9 +23,9 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     //vars for get tokens
     let scope = "http://api.microsofttranslator.com"
-    let client_id = "ENTER CLIENT ID"
+    let client_id = "softbank_MSTS2S_App"
     let grant_type = "client_credentials"
-    let client_secret = "ENTER CLIENT SECRETXCCCC"
+    let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D="
     var token = String() //token that comes back from ADM
     var finalToken = String() //token that include bearer information
     
@@ -58,9 +58,11 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     @IBAction func doneTalking(sender: AnyObject) {
         
-        self.audioRecorder!.stop()
-        getToken()
         
+        if audioRecorder?.recording != nil {
+            self.audioRecorder!.stop()
+            getToken()
+        }
     }
     
     
@@ -387,12 +389,13 @@ extension TranslationVC : WebSocketDelegate {
         usleep(100000)
         
         // send chunks
-        let sep = 10000
+        let sep = 6144
         let num = length/sep
-        
-        if length != 64632 {
+        //remove this if and run again - this could b just about the remiander causing an out of range error
+        if length > 64632 {  //in case nothing is recorded
             
             for i in 1...(num+1) {
+                
                 socket.writeData(audioData.subdataWithRange(NSRange(location:(i-1)*sep, length:sep)))
                 print("send ", i)
                 usleep(100000) //sleep in microseconds
@@ -498,7 +501,7 @@ extension TranslationVC : WebSocketDelegate {
     func postWebserver( translationString : String) {
 
         
-        var translationUrl: String = "ENTER URL TO MAKE THE POST" + "?id=" + translationString
+        var translationUrl: String = "https://infocenterserver.azurewebsites.net/api/products" + "?id=" + translationString
         
         translationUrl = translationUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         
@@ -529,7 +532,7 @@ extension TranslationVC : WebSocketDelegate {
     
     func refreshWebView() {
         
-        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "ENTER URL TO GET WEB CONTENT")!))
+        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
         
         newStringFromWebView = translatedWebView.stringByEvaluatingJavaScriptFromString("document.body.innerText") as String!
         

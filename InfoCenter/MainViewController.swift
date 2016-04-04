@@ -94,7 +94,7 @@ class MainViewController: UIViewController {
     
     @IBAction func Portugues(sender: AnyObject) {
         
-        self.customerLanguage = "pt-PT"
+        self.customerLanguage = "pt-BR"
         
         performSegueWithIdentifier("toTranslation", sender: sender)
     }

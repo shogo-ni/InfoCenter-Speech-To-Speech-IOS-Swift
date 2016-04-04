@@ -17,16 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-ZF-aeU">
-                                <rect key="frame" x="392" y="505" width="196" height="71"/>
-                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
-                                <state key="normal" title="日本語">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="ChineseTraditional:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u40-FO-xKr"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vpk-5j-pdY">
                                 <rect key="frame" x="42" y="306" width="293" height="85"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
@@ -48,9 +38,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="94o-r3-cxG">
-                                <rect key="frame" x="747" y="505" width="133" height="70"/>
+                                <rect key="frame" x="729" y="505" width="197" height="70"/>
                                 <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
-                                <state key="normal" title="中文">
+                                <state key="normal" title="中文-s">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -126,6 +116,16 @@
                                 </state>
                                 <connections>
                                     <action selector="Spanish:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pKE-7u-ooj"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-ZF-aeU">
+                                <rect key="frame" x="377" y="505" width="252" height="71"/>
+                                <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="60"/>
+                                <state key="normal" title="中文-t">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="ChineseTraditional:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u40-FO-xKr"/>
                                 </connections>
                             </button>
                         </subviews>
