@@ -15,12 +15,8 @@ var fromLanguage = "en-US"
 
 
 class MainViewController: UIViewController {
-
     
-    
-    var customerLanguage = String() //set by button
-    
-    
+    var customerLanguage = String() //set language code from button tap
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +24,6 @@ class MainViewController: UIViewController {
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape1024x768 v1.jpg")!)
     }
-    
-    
     
     
     //*****IBACTION*****
