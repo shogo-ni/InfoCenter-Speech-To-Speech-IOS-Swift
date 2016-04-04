@@ -26,7 +26,7 @@ class MainViewController: UIViewController {
     }
     
     
-    //*****IBACTION*****
+    //*****IBACTION
     @IBAction func ChineseSimplified(sender: AnyObject) {
         
         self.customerLanguage = "zh-CN"
