@@ -182,7 +182,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     func getToken() -> String {
         
         self.statusField.text = "Translating"
-        var clientId = "NBCU_MSTS2S_App"
+        var clientId = "ENTER CLIENT ID"
         var clientSecret = "W5YrQ8aOpeZ0+54bkaQa2Dx9cDgvTRiHSZPl8M3yg08="
         var grantType = "client_credentials"
         let url = " "
