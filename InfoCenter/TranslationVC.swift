@@ -182,7 +182,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     func getToken() -> String {
         
         self.statusField.text = "Translating"
-        var clientId = "ENTER CLIENT ID"
+        var clientId = "NBCU_MSTS2S_App"
         var clientSecret = "W5YrQ8aOpeZ0+54bkaQa2Dx9cDgvTRiHSZPl8M3yg08="
         var grantType = "client_credentials"
         let url = " "
@@ -336,7 +336,7 @@ extension TranslationVC : WebSocketDelegate {
         
         let features = "Partial"
         
-        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/api/speech/translate?from=" + from + "&to=" + to + "&features=" + features)!, protocols: [])
+        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/speech/translate?from=" + from + "&to=" + to + "&features=" + features + "&api-version=1.0")!, protocols: [])
         
         socket.headers["Authorization"] = "Bearer " + (token as String)
         socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
@@ -391,7 +391,8 @@ extension TranslationVC : WebSocketDelegate {
         // send chunks
         let sep = 6144
         let num = length/sep
-        //remove this if and run again - this could b just about the remiander causing an out of range error
+        
+       
         if length > 64632 {  //in case nothing is recorded
             
             for i in 1...(num+1) {

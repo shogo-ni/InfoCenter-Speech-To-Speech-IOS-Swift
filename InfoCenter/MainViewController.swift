@@ -73,7 +73,7 @@ class MainViewController: UIViewController {
     
     @IBAction func Arabic(sender: AnyObject) {
         
-        self.customerLanguage = "ar-SA"
+        self.customerLanguage = "ar-EG"
         
         performSegueWithIdentifier("toTranslation", sender: sender)
     }
