@@ -23,7 +23,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     
     //vars for get tokens
     let scope = "http://api.microsofttranslator.com"
-    let client_id = "softbank_MSTS2S_App"
+    let client_id = "_MSTS2S_App"
     let grant_type = "client_credentials"
     let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D="
     var token = String() //token that comes back from ADM
