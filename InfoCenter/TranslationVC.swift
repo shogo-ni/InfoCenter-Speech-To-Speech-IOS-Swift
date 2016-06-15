@@ -336,7 +336,7 @@ extension TranslationVC : WebSocketDelegate {
         
         let features = "Partial"
         
-        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/speech/translate?from=" + from + "&to=" + to + "&features=" + features + "&api-version=1.0")!, protocols: [])
+        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/speech/translate?from=" + from + "&to=" + to + "&features=" + features + "&api-version=1.0")!, protocols: [nil])
         
         socket.headers["Authorization"] = "Bearer " + (token as String)
         socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
