@@ -12,22 +12,20 @@ import AVFoundation
 
 
 class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
-
+    
     //recording vars
     var audioPlayer : AVAudioPlayer?
     var audioRecorder : AVAudioRecorder?
-    var url : NSURL? //holds the URL to the file that is being sent to V4
-    var filePath : NSURL?
-    var silenceTimer = NSTimer()
+    var url : URL? //holds the URL to the file that is being sent to V4
+    var filePath : URL?
+    var silenceTimer = Timer()
     var audioFile : AVAudioFile?
     
     //vars for get tokens
     let scope = "http://api.microsofttranslator.com"
     let client_id = "_MSTS2S_App"
-    let grant_type = "client_credentials"
-    let client_secret = "h20OvLOmBQchNidp90nbDI5e6jWquVGQNQshmuGiqtw%3D="
+    let client_token = "e83e7cc287e04b5dad361823bc3b70fd"
     var token = String() //token that comes back from ADM
-    var finalToken = String() //token that include bearer information
     
     var socket: WebSocket!
     
@@ -38,28 +36,24 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     var newStringFromWebView = ""
     
     var lastSpeaker = "no"
-
+    
     
     //*****IBACTION
-    @IBAction func home(sender: AnyObject) {
+    @IBAction func home(_ sender: AnyObject) {
         
-        performSegueWithIdentifier("home", sender: sender)
+        performSegue(withIdentifier: "home", sender: sender)
     }
     
     
-    @IBAction func talkOne(sender: AnyObject) {
-        
+    @IBAction func talkOne(_ sender: AnyObject) {
         statusField.text = "Listening"
         recordSound()
         lastSpeaker = "yes"
-        
     }
     
     
-    @IBAction func doneTalking(sender: AnyObject) {
-        
-        
-        if audioRecorder?.recording != nil {
+    @IBAction func doneTalking(_ sender: AnyObject) {
+        if audioRecorder?.isRecording != nil {
             self.audioRecorder!.stop()
             getToken()
         }
@@ -84,39 +78,40 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         
         self.view.backgroundColor = UIColor(patternImage: UIImage(named: "cityscape1024x768 v1.jpg")!)
         
-        self.silenceTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(TranslationVC.refreshWebView), userInfo: nil, repeats: true)
+        self.silenceTimer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(TranslationVC.refreshWebView), userInfo: nil, repeats: true)
         
         statusField.text = "Waiting"
         
         postWebserver(" ")
         
     }
-
+    
     
     //*****BEGIN RECORDING SECTION
     func recordSound(){
         
-        if ((audioRecorder?.recording) != nil) {
+        if ((audioRecorder?.isRecording) != nil) {
             stop()
         }
         
-        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let recordingName = "my_audio.wav"
-        let path = [dirPath, recordingName]
-        self.filePath = NSURL.fileURLWithPathComponents(path)!
+        
+        self.filePath = URL.init(fileURLWithPath:dirPath)
+        self.filePath?.appendPathComponent(recordingName, isDirectory: false)
         
         let recordSettings = [
-            AVEncoderAudioQualityKey: AVAudioQuality.Min.rawValue, //changed from .Min
+            AVEncoderAudioQualityKey: AVAudioQuality.min.rawValue, //changed from .Min
             AVEncoderBitRateKey: 16,
             AVNumberOfChannelsKey: 1,
-            AVSampleRateKey: 16000.0             ]
+            AVSampleRateKey: 16000.0             ] as [String : Any]
         
-            print(filePath)
+        print(filePath!)
         
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            self.audioRecorder = try AVAudioRecorder(URL: self.filePath!, settings: recordSettings as! [String : AnyObject])
+            self.audioRecorder = try AVAudioRecorder(url: self.filePath!, settings: recordSettings as [String : AnyObject])
             
             self.url = filePath //assign path to viewcontroller scoped var
             
@@ -124,40 +119,29 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
             print("Error")
         }
         
-                self.audioRecorder!.meteringEnabled = true
+        self.audioRecorder!.isMeteringEnabled = true
         self.audioRecorder!.prepareToRecord()
         self.audioRecorder!.record()
         
-        
         //check to see if file exists
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let checkValidation = FileManager.default
         
-        let fullPath = (paths as NSString).stringByAppendingPathComponent("my_audio.wav")
-        
-        let checkValidation = NSFileManager.defaultManager()
-        
-        if (checkValidation.fileExistsAtPath(fullPath)) {
-            
+        if (checkValidation.fileExists(atPath: self.filePath!.absoluteString)) {
             print("FILE AVAILABLE")
-            
-            print("file size", sizeForLocalFilePath(fullPath))
-            
+            print("file size", sizeForLocalFilePath(filePath!.absoluteString))
         } else {
-        
             print("FILE NOT AVAILABLE")
         }
         //end file existance check
-        
-        
     }
     
-
-    func sizeForLocalFilePath(filePath:String) -> UInt64 {
+    
+    func sizeForLocalFilePath(_ filePath:String) -> UInt64 {
         
         do {
-            let fileAttributes = try NSFileManager.defaultManager().attributesOfItemAtPath(filePath)
-            if let fileSize = fileAttributes[NSFileSize]  {
-                return (fileSize as! NSNumber).unsignedLongLongValue
+            let fileAttributes = try FileManager.default.attributesOfItem(atPath: filePath)
+            if let fileSize = fileAttributes[FileAttributeKey.size]  {
+                return (fileSize as! NSNumber).uint64Value
             } else {
                 print("Failed to get a size attribute from path: \(filePath)")
             }
@@ -167,7 +151,7 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
         return 0
     }
     
-
+    
     func stop() {
         
         self.audioRecorder?.stop()
@@ -178,68 +162,60 @@ class TranslationVC: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDel
     //*****END RECORDING SECTION
     
     
-    //*****GET TOKEN*****
-    func getToken() -> String {
+    //*****GET TOKEN and start translation...
+    func getToken() -> Void {
         
         self.statusField.text = "Translating"
-        var clientId = "ADD A CLIENT ID"
-        var clientSecret = "W5YrQ8aOpeZ0+54bkaQa2Dx9cDgvTRiHSZPl8M3yg08="
-        var grantType = "client_credentials"
-        let url = " "
-        var scope = "http://api.microsofttranslator.com"
-        let customAllowedSet = NSCharacterSet(charactersInString:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnioqrstuvwxyz0123456789_!*'();:@$,#[]+=/").invertedSet
         
-        clientId = clientId.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-        clientSecret = clientSecret.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-        scope = scope.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
-        grantType = grantType.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+        var clientKey = client_token
+        let request = NSMutableURLRequest(url: URL(string: "https://api.cognitive.microsoft.com/sts/v1.0/issueToken?" )!)
+        request.setValue(clientKey, forHTTPHeaderField: "Ocp-Apim-Subscription-Key")
+        request.httpMethod = "POST"
+        request.httpBody = "{body}".data(using: String.Encoding.utf8)
         
-        let postString = "grant_type=\(grantType)&client_id=\(clientId)&client_secret=\(clientSecret)&scope=\(scope)"
-        
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13" )!)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
-        
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-            data, response, error in
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
             
             if error != nil {
                 print("error=\(error)")
+                self.statusField.text = "error"
                 return
             }
             
-            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             
-            do {
-                let result = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions()) as? NSDictionary
-                
-                defer {
-                    self.token = result!["access_token"] as! String
-                    self.finalToken = "Bearer " + self.token //configure token
-                    
-                    self.connectWebsocket() //start the connection to the websocket
-                }
-                
-            } catch {
-                
-                print("could not get token because -> \(error)")
+            // Should validate the token...
+            if self.validateToken(token: responseString as! String)==false {
+                print("error=\(responseString)")
+                self.statusField.text = "error"
                 return
-                
+            }
+            
+            defer {
+                self.token = responseString as! String
+                self.connectWebsocket() //start the connection to the websocket
             }
         }
-        
         task.resume()
+    }
+    func validateToken(token:String) -> Bool {
+        let components = token.components(separatedBy: ".")
+        if components.count != 3 {
+            return false
+        }
+        if token.hasPrefix("{") {
+            return false
+        }
+        // More validation required to check expiration time...
         
-        return self.finalToken
-        
+        // skiping it
+        return true
     }
     
     
-    
     //*****CREATE WAV FILE HEADER
-    func getFileHeader(leng: Int, samlpleRate: Int, byteRate: Int) -> [UInt8]{
+    func getFileHeader(_ leng: Int, samlpleRate: Int, byteRate: Int) -> [UInt8]{
         
-        var header: [UInt8] = [UInt8](count : 44, repeatedValue : 0)
+        var header: [UInt8] = [UInt8](repeating: 0, count: 44)
         let dataSize = leng + 44
         
         for a in "R".utf8 {
@@ -335,83 +311,80 @@ extension TranslationVC : WebSocketDelegate {
         let from = self.customerLanguage
         
         let features = "Partial"
+        let url = URL(string: "wss://dev.microsofttranslator.com/speech/translate?from=" + from + "&to=" + to + "&features=" + features + "&api-version=1.0")
         
-        socket = WebSocket(url: NSURL(string: "wss://dev.microsofttranslator.com/speech/translate?from=" + from + "&to=" + to + "&features=" + features + "&api-version=1.0")!, protocols: [nil])
+        socket = WebSocket(url:url!)
         
         socket.headers["Authorization"] = "Bearer " + (token as String)
-        socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"
-        socket.headers["X-CorrelationId"] = "213091F1CF4aaD"
+        socket.headers["X-ClientAppId"] = "{ea66703d-90a8-436b-9bd6-7a2707a2ad99}"  // ANY IDENTIFIER
+        socket.headers["X-CorrelationId"] = "213091F1CF4aaD"    // ANY VALUE
         socket.delegate = self
-        socket.disconnect() //In case the socket is already connected?
         socket.connect() //make the socket connection
     }
-    
-    
-    func websocketDidConnect(ws: WebSocket) {
-        
+    func websocketDidConnect(socket ws: WebSocket) {
         print("websocket is connected")
-        print(ws.headers)
         
         var audioFileBuffer : AVAudioPCMBuffer
         
         // *************OPEN RECORDED FILE FOR READING AND CHUNKING TO SEND TO SERVICE
-        
         do {
-            self.audioFile = try AVAudioFile.init(forReading: self.filePath!, commonFormat: .PCMFormatInt16, interleaved: false) //open the audio file for reading
+            self.audioFile = try AVAudioFile.init(forReading: self.filePath!, commonFormat: .pcmFormatInt16, interleaved: false) //open the audio file for reading
             
-            print("this is the file that is sent", self.filePath)
+            print("this is the file that is sent", self.filePath! )
             print(audioFile!.processingFormat)
             
-        }catch{
+        }
+        catch {
             print("error reading file")
+            // Handle error...
         }
         
-        audioFileBuffer = AVAudioPCMBuffer(PCMFormat: audioFile!.processingFormat, frameCapacity: UInt32(audioFile!.length))
+        audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile!.processingFormat, frameCapacity: UInt32(audioFile!.length))
         
         do {
-            
-            try audioFile!.readIntoBuffer(audioFileBuffer)
-        }catch{
+            try audioFile!.read(into: audioFileBuffer)
+        }
+        catch {
             print("error loading buffer")
+            // Handle error
         }
         
         let channels = UnsafeBufferPointer(start: audioFileBuffer.int16ChannelData, count: 1)
-        let length = Int(audioFileBuffer.frameCapacity * audioFileBuffer.format.streamDescription.memory.mBytesPerFrame)
-        let audioData = NSData(bytes: channels[0], length:length)
+        let length = Int(audioFileBuffer.frameCapacity * audioFileBuffer.format.streamDescription.pointee.mBytesPerFrame)
+        let audioData = Data(bytes: channels[0], count: length)
         
         // send header
         var header = getFileHeader(length, samlpleRate: 16000, byteRate: 32000)  //PASS DATA FOR HEADER AND RETURN HEADER
         
         print(header)
-        print(NSData(bytes: &header, length: 44))
+        print(Data(bytes: &header, count: 44))
         
-        socket.writeData(NSData(bytes: &header, length: header.count))
+        socket.write(data: Data(bytes: &header, count: header.count))
         usleep(100000)
         
         // send chunks
         let sep = 6144
         let num = length/sep
         
-       
+        
         if length > 64632 {  //in case nothing is recorded
             
             for i in 1...(num+1) {
-                
-                socket.writeData(audioData.subdataWithRange(NSRange(location:(i-1)*sep, length:sep)))
-                print("send ", i)
+                let subData = audioData.subdata(in: (i-1)*sep..<((i-1)*sep + length))
+                socket.write(data: subData)
                 usleep(100000) //sleep in microseconds
                 
             }
-        
+            
             // send blank
             var raw_b = 0b0
-            let data_b = NSMutableData(bytes: &raw_b, length: sizeof(NSInteger))
+            let data_b = NSMutableData(bytes: &raw_b, length: MemoryLayout<NSInteger>.size)
             for _ in 0...11000 {
-                data_b.appendBytes(&raw_b, length: sizeof(NSInteger))
+                data_b.append(&raw_b, length: MemoryLayout<NSInteger>.size)
             }
-        
+            
             print("send blank", data_b.length)
-            socket.writeData(data_b)
+            socket.write(data: data_b as Data)
             
         } else {
             self.statusField.text = "Waiting" //change status
@@ -420,49 +393,44 @@ extension TranslationVC : WebSocketDelegate {
     }
     
     
-    func websocketDidDisconnect(ws: WebSocket, error: NSError?) {
-        
-        
+    func websocketDidDisconnect(socket ws: WebSocket, error: NSError?) {
         if let e = error {
             print("websocket is disconnected: \(e.localizedDescription)")
         } else {
             print("websocket disconnected")
         }
-        
-        
         self.statusField.text = "Waiting"
     }
     
-    
-    func websocketDidReceiveMessage(ws: WebSocket, text: String) {
+    func websocketDidReceiveMessage(socket ws: WebSocket, text: String) {
         
         var messageType = String()
         var recognition = String()
         var translation = String()
         var htmlString : String!
-        let finalText = text.dataUsingEncoding(NSUTF8StringEncoding)
+        let finalText = text.data(using: String.Encoding.utf8)
         
         
         //PARSE JSON
         do {
-            let jsonString = try NSJSONSerialization.JSONObjectWithData(finalText!, options: .AllowFragments)
+            let jsonString = try JSONSerialization.jsonObject(with: finalText!, options: .allowFragments) as? [String:Any]
             
             print("********")
-            print("this is the full string----->", jsonString)
+            print("this is the full string----->", jsonString as Any)
             print("********")
             
-            messageType = (jsonString["type"] as? String)!
+            messageType = (jsonString?["type"] as? String)!
             
             //this section displays partials to the textviw
             if messageType == "partial" {
-                recognition = (jsonString["recognition"] as? String)!
+                recognition = (jsonString?["recognition"] as? String)!
                 recognizedText.text = recognition
             }
             
             if messageType == "final" {
                 
-                translation = (jsonString["translation"] as? String)!
-                recognition = (jsonString["recognition"] as? String)!
+                translation = (jsonString?["translation"] as? String)!
+                recognition = (jsonString?["recognition"] as? String)!
                 
             }
             
@@ -489,31 +457,31 @@ extension TranslationVC : WebSocketDelegate {
     
     
     //This is for playing the voice data - This functionality is not used in the app.
-    func websocketDidReceiveData(ws: WebSocket, data: NSData) {
+    func websocketDidReceiveData(socket ws: WebSocket, data: Data) {
         
-        let length = data.length //length of chunk
+        let length = data.count //length of chunk
         print("Received audio data: \(length)")
         
-        var audioArrayChunk = [UInt32](count: length, repeatedValue: 0) //create array
+        /// var audioArrayChunk = [UInt32](repeating: 0, count: length) //create array
         
     }
     
     
-    func postWebserver( translationString : String) {
-
+    func postWebserver( _ translationString : String) {
+        
         
         var translationUrl: String = "https://infocenterserver.azurewebsites.net/api/products" + "?id=" + translationString
         
-        translationUrl = translationUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        translationUrl = translationUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         
         
-        let myUrl: NSURL = NSURL(string: translationUrl)!
+        let myUrl: URL = URL(string: translationUrl)!
         
-        let request = NSMutableURLRequest(URL: myUrl)
+        let request = NSMutableURLRequest(url: myUrl)
         
-        request.HTTPMethod = "GET"
+        request.httpMethod = "GET"
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {
             data, response, error in
             
             if error != nil
@@ -522,10 +490,10 @@ extension TranslationVC : WebSocketDelegate {
                 
             }
             
-            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             print("responseString = \(responseString)")
             
-        }
+        })
         
         task.resume()
         
@@ -533,45 +501,45 @@ extension TranslationVC : WebSocketDelegate {
     
     func refreshWebView() {
         
-        translatedWebView.loadRequest(NSURLRequest(URL: NSURL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
+        translatedWebView.loadRequest(URLRequest(url: URL(string: "https://infocenterserver.azurewebsites.net/index.aspx")!))
         
-        newStringFromWebView = translatedWebView.stringByEvaluatingJavaScriptFromString("document.body.innerText") as String!
+        newStringFromWebView = translatedWebView.stringByEvaluatingJavaScript(from: "document.body.innerText") as String!
         
         if newStringFromWebView != oldStringFromWebView {
             
             if lastSpeaker == "no" {
                 
-            getVoice(newStringFromWebView)
-            
+                getVoice(newStringFromWebView)
+                
             } else {
                 lastSpeaker = "no"
             }
         } else {
             
         }
-            
+        
         defer {
-        oldStringFromWebView = newStringFromWebView
+            oldStringFromWebView = newStringFromWebView
         }
     }
     
     
-    func getVoice(translationToVoice : String) {
+    func getVoice(_ translationToVoice : String) {
         
         var translatedString = translationToVoice //passed in string
         let quality = "MinSize"
         let to = self.customerLanguage
         print(toVoice)
-        let customAllowedSet = NSCharacterSet(charactersInString:" _!*'();:@$,#[]+=/").invertedSet
+        let customAllowedSet = CharacterSet(charactersIn:" _!*'();:@$,#[]+=/").inverted
         
-        translatedString = translatedString.stringByAddingPercentEncodingWithAllowedCharacters(customAllowedSet)!
+        translatedString = translatedString.addingPercentEncoding(withAllowedCharacters: customAllowedSet)!
         
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api.microsofttranslator.com/V2/Http.svc/Speak?text=\(translatedString)&language=\(to)&options=\(quality)" )!)
-        request.HTTPMethod = "GET"
+        let request = NSMutableURLRequest(url: URL(string: "https://api.microsofttranslator.com/V2/Http.svc/Speak?text=\(translatedString)&language=\(to)&options=\(quality)" )!)
+        request.httpMethod = "GET"
         
-        request.addValue(self.finalToken, forHTTPHeaderField:"Authorization")
+        request.addValue(self.token, forHTTPHeaderField:"Authorization")
         
-        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+        let task = URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {
             data, response, error in
             
             if error != nil {
@@ -579,8 +547,8 @@ extension TranslationVC : WebSocketDelegate {
                 return
             }
             
-            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            print("this is the reponse from the speakmethod", responseString)
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            print("this is the reponse from the speakmethod", responseString!)
             
             
             //PLAY AUDIO
@@ -593,7 +561,7 @@ extension TranslationVC : WebSocketDelegate {
             } catch {
                 print("error Audio Player")
             }
-        }
+        })
         
         task.resume()
         

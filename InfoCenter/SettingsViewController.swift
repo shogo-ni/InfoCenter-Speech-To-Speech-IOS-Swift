@@ -24,14 +24,14 @@ class SettingsViewController: UIViewController {
     
     //*****IBACTION
     
-    @IBAction func toGerman(sender: AnyObject) {
+    @IBAction func toGerman(_ sender: AnyObject) {
         
         toLanguage = "de-DE"
         toLanguageText.text = "German"
         toVoice = "de-DE"
     }
     
-    @IBAction func toEnglish(sender: AnyObject) {
+    @IBAction func toEnglish(_ sender: AnyObject) {
         
         toLanguage = "en-US"
         toLanguageText.text = "English"
@@ -39,21 +39,21 @@ class SettingsViewController: UIViewController {
         print(toLanguage)
     }
     
-    @IBAction func toSpanish(sender: AnyObject) {
+    @IBAction func toSpanish(_ sender: AnyObject) {
         
         toLanguage = "es-ES"
         toLanguageText.text = "Spanish"
         toVoice = "es-ES"
     }
     
-    @IBAction func toFrench(sender: AnyObject) {
+    @IBAction func toFrench(_ sender: AnyObject) {
         
         toLanguage = "fr-FR"
         toLanguageText.text = "French"
         toVoice = "fr-FR"
     }
     
-    @IBAction func toItalian(sender: AnyObject) {
+    @IBAction func toItalian(_ sender: AnyObject) {
         
         toLanguage = "it-IT"
         toLanguageText.text = "Italian"
@@ -61,37 +61,37 @@ class SettingsViewController: UIViewController {
         print(toVoice)
     }
     
-    @IBAction func toPortuguese(sender: AnyObject) {
+    @IBAction func toPortuguese(_ sender: AnyObject) {
         
         toLanguage = "pt-PT"
         toLanguageText.text = "Portuguese"
         toVoice = "pt-PT"
     }
     
-    @IBAction func toArabic(sender: AnyObject) {
+    @IBAction func toArabic(_ sender: AnyObject) {
         
         toLanguage = "ar-SA"
         toLanguageText.text = "Arabic"
         toVoice = "ar-SA"
     }
     
-    @IBAction func toChineseSimplified(sender: AnyObject) {
+    @IBAction func toChineseSimplified(_ sender: AnyObject) {
         
         toLanguage = "zh-CN"
         toLanguageText.text = "Chinese Simplified"
         toVoice = "zh-CN"
     }
     
-    @IBAction func toChineseTraditional(sender: AnyObject) {
+    @IBAction func toChineseTraditional(_ sender: AnyObject) {
         
         toLanguage = "zh-TW"
         toLanguageText.text = "Chinese Traditional"
         toVoice = "zh-TW"
     }
     
-    @IBAction func toMain(sender: AnyObject) {
+    @IBAction func toMain(_ sender: AnyObject) {
         
-        performSegueWithIdentifier("toMain", sender: sender)
+        performSegue(withIdentifier: "toMain", sender: sender)
     }
     
     

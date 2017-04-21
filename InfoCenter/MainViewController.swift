@@ -27,84 +27,84 @@ class MainViewController: UIViewController {
     
     
     //*****IBACTION
-    @IBAction func ChineseSimplified(sender: AnyObject) {
+    @IBAction func ChineseSimplified(_ sender: AnyObject) {
         
         self.customerLanguage = "zh-CN"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func English(sender: AnyObject) {
+    @IBAction func English(_ sender: AnyObject) {
         
         self.customerLanguage = "en-US"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func French(sender: AnyObject) {
+    @IBAction func French(_ sender: AnyObject) {
         
         self.customerLanguage = "fr-FR"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func German(sender: AnyObject) {
+    @IBAction func German(_ sender: AnyObject) {
         
         self.customerLanguage = "de-DE"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func Italian(sender: AnyObject) {
+    @IBAction func Italian(_ sender: AnyObject) {
         
         self.customerLanguage = "it-IT"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
         
     }
     
-    @IBAction func ChineseTraditional(sender: AnyObject) {
+    @IBAction func ChineseTraditional(_ sender: AnyObject) {
         
         self.customerLanguage = "zh-TW"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
         
     }
     
-    @IBAction func Arabic(sender: AnyObject) {
+    @IBAction func Arabic(_ sender: AnyObject) {
         
         self.customerLanguage = "ar-EG"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func Spanish(sender: AnyObject) {
+    @IBAction func Spanish(_ sender: AnyObject) {
         
         self.customerLanguage = "es-ES"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
         
     }
     
-    @IBAction func Portugues(sender: AnyObject) {
+    @IBAction func Portugues(_ sender: AnyObject) {
         
         self.customerLanguage = "pt-BR"
         
-        performSegueWithIdentifier("toTranslation", sender: sender)
+        performSegue(withIdentifier: "toTranslation", sender: sender)
     }
     
-    @IBAction func settings(sender: AnyObject) {
+    @IBAction func settings(_ sender: AnyObject) {
         
-        performSegueWithIdentifier("toSettings", sender: sender)
+        performSegue(withIdentifier: "toSettings", sender: sender)
     }
     
     
     //*****END IBACTION
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "toTranslation" {
-            let segueToTranslation : TranslationVC = segue.destinationViewController as! TranslationVC
+            let segueToTranslation : TranslationVC = segue.destination as! TranslationVC
             segueToTranslation.customerLanguage = customerLanguage
         }
         
