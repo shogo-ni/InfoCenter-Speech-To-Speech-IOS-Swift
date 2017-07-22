@@ -1,0 +1,6 @@
+framework module Pods_InfoCenter {
+  umbrella header "Pods-InfoCenter-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,13 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [{
+    'type': 'directory',
+    'name': '/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/build/Debug-iphonesimulator/Starscream/Starscream.framework/Modules'
+    'contents': [{
+      'type': 'file',
+      'name': 'module.modulemap',
+      'external-contents': '/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/build/Pods.build/Debug-iphonesimulator/Starscream.build/unextended-module.modulemap',
+    }]
+  }]
+}

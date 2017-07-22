@@ -1,0 +1,8 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "bde70e3ef6079821bd350c29e639073b"
+build_time: [553994491, 914309000]
+inputs:
+  "/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/InfoCenter/TranslationVC.swift": !dirty [546126183, 0]
+  "/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/InfoCenter/MainViewController.swift": !dirty [546125367, 0]
+  "/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/InfoCenter/SettingsViewController.swift": !dirty [546125367, 0]
+  "/Users/regisbridon/InfoCenter-Speech-To-Speech-IOS-Swift/InfoCenter/AppDelegate.swift": !dirty [546125367, 0]
