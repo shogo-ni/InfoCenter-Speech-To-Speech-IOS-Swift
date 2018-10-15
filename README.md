@@ -1,6 +1,6 @@
 # InfoCenter
 
-**Note: The new Speech Service and SDK is replacing the Microsoft Translator Speech API, which will no longer work starting October 15, 2019. For information on switching to the Speech Service, see [Migrating from the Custom Speech Service to the Speech Service](https://review.docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-migrate-from-custom-speech-service).**
+**Note: The new Speech Service and SDK is replacing the Microsoft Translator Speech API, which will no longer work starting January 15, 2019. For information on switching to the Speech Service, see [Migrating from the Custom Speech Service to the Speech Service](https://review.docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-migrate-from-custom-speech-service).**
 
 ### Microsoft Translator Demonstration App For Tourist Information Centers
 The app demonstrates how to use the Microsoft Translator Speech API. It is an IOS app written in *Swift* for the iPad. It is designed for information centers who need language translation to support tourists. 
